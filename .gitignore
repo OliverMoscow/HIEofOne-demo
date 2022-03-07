@@ -33,3 +33,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+[label .gitignore]
+# static folder for DigitalOcean App Platform
+_static
