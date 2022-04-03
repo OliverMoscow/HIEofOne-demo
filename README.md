@@ -1,42 +1,114 @@
-# Welcome to the NextJS wagmi starter template 👋
-Looking to get up and running with a Typescript / NextJS dApp as quickly as possible? You're in the right place! This repo serves as a minimal template for integrating the wagmi React hooks for Ethereum library with Typescript & NextJS. Due to its ease of customizability and extensibility, this template has been styled with the Tailwind CSS framework. Let's get to it!
-### Check out the live demo 👉 [NextJS wagmi](https://nextjs-wagmi.vercel.app/)
+> The example repository is maintained from a [monorepo](https://github.com/nextauthjs/next-auth/tree/main/apps/example-nextjs). Pull Requests should be opened against [`nextauthjs/next-auth`](https://github.com/nextauthjs/next-auth).
 
-## Get up and running in 3 simple steps:
+<p align="center">
+   <br/>
+   <a href="https://next-auth.js.org" target="_blank"><img width="150px" src="https://next-auth.js.org/img/logo/logo-sm.png" /></a>
+   <h3 align="center">NextAuth.js Example App</h3>
+   <p align="center">
+   Open Source. Full Stack. Own Your Data.
+   </p>
+   <p align="center" style="align: center;">
+      <a href="https://npm.im/next-auth">
+        <img alt="npm" src="https://img.shields.io/npm/v/next-auth?color=green&label=next-auth">
+      </a>
+      <a href="https://bundlephobia.com/result?p=next-auth-example">
+        <img src="https://img.shields.io/bundlephobia/minzip/next-auth?label=next-auth" alt="Bundle Size"/>
+      </a>
+      <a href="https://www.npmtrends.com/next-auth">
+        <img src="https://img.shields.io/npm/dm/next-auth?label=next-auth%20downloads" alt="Downloads" />
+      </a>
+      <a href="https://npm.im/next-auth">
+        <img src="https://img.shields.io/badge/npm-TypeScript-blue" alt="TypeScript" />
+      </a>
+   </p>
+</p>
 
-### 1. Create an app using this repo as the template
-```bash
-npx create-next-app@latest -e https://github.com/Seth-McKilla/nextjs-wagmi
+## Overview
+
+NextAuth.js is a complete open source authentication solution.
+
+This is an example application that shows how `next-auth` is applied to a basic Next.js app.
+
+The deployed version can be found at [`next-auth-example.vercel.app`](https://next-auth-example.vercel.app)
+
+### About NextAuth.js
+
+NextAuth.js is an easy to implement, full-stack (client/server) open source authentication library originally designed for [Next.js](https://nextjs.org) and [Serverless](https://vercel.com). Our goal is to [support even more frameworks](https://github.com/nextauthjs/next-auth/issues/2294) in the future.
+
+Go to [next-auth.js.org](https://next-auth.js.org) for more information and documentation.
+
+> *NextAuth.js is not officially associated with Vercel or Next.js.*
+
+## Getting Started
+
+### 1. Clone the repository and install dependencies
+
 ```
->Note: The above command automatically downloads and installs the dependencies so no "npm install" or "yarn add" required!
-
-### 2. Create a .env.local file within the root directory with the following environment variables
-```bash
-NEXT_PUBLIC_INFURA_ID=<insert infura id>
+git clone https://github.com/nextauthjs/next-auth-example.git
+cd next-auth-example
+npm install
 ```
->Note: Grab an Infura ID from the [Infura website](https://infura.io/)
 
-### 3. Start the local development environment
-```bash
+### 2. Configure your local environment
+
+Copy the .env.local.example file in this directory to .env.local (which will be ignored by Git):
+
+```
+cp .env.local.example .env.local
+```
+
+Add details for one or more providers (e.g. Google, Twitter, GitHub, Email, etc).
+
+#### Database
+
+A database is needed to persist user accounts and to support email sign in. However, you can still use NextAuth.js for authentication without a database by using OAuth for authentication. If you do not specify a database, [JSON Web Tokens](https://jwt.io/introduction) will be enabled by default.
+
+You **can** skip configuring a database and come back to it later if you want.
+
+For more information about setting up a database, please check out the following links:
+
+* Docs: [next-auth.js.org/adapters/overview](https://next-auth.js.org/adapters/overview)
+* Adapters Repo: [nextauthjs/adapters](https://github.com/nextauthjs/adapters)
+
+### 3. Configure Authentication Providers
+
+1. Review and update options in `pages/api/auth/[...nextauth].js` as needed.
+
+2. When setting up OAuth, in the developer admin page for each of your OAuth services, you should configure the callback URL to use a callback path of `{server}/api/auth/callback/{provider}`.
+
+  e.g. For Google OAuth you would use: `http://localhost:3000/api/auth/callback/google`
+
+  A list of configured providers and their callback URLs is available from the endpoint `/api/auth/providers`. You can find more information at https://next-auth.js.org/configuration/providers/oauth
+
+3. You can also choose to specify an SMTP server for passwordless sign in via email.
+
+### 4. Start the application
+
+To run your site locally, use:
+
+```
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To run it in production mode, use:
 
-That's it, you're all set!
+```
+npm run build
+npm run start
+```
 
-## Resources
-To learn more about the packages used in this project, take a look at the following resources:
+### 5. Preparing for Production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [React Typescript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/setup/) - helpful tips for using Typescript with React.
-- [wagmi Documentation](https://wagmi-xyz.vercel.app/) - learn about the wagmi React hooks for Ethereum.
-- [Tailwind CSS Documentation](https://tailwindcss.com/) - learn about the Tailwind CSS styling framework.
+Follow the [Deployment documentation](https://next-auth.js.org/deployment)
 
-## Deploy on Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSeth-McKilla%2Fnextjs-wagmi&env=NEXT_PUBLIC_INFURA_ID)
+## Acknowledgements
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<a href="https://vercel.com?utm_source=nextauthjs&utm_campaign=oss">
+<img width="170px" src="https://raw.githubusercontent.com/nextauthjs/next-auth/canary/www/static/img/powered-by-vercel.svg" alt="Powered By Vercel" />
+</a>
+<p align="left">Thanks to Vercel sponsoring this project by allowing it to be deployed for free for the entire NextAuth.js Team</p>
+
+## License
+
+ISC
+
