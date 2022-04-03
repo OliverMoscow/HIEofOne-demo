@@ -13,6 +13,9 @@ export default function Footer() {
         <li className={styles.navItem}>
           <a href="https://hieofone.com/">HIE of One</a>
         </li>
+        <li className={styles.navItem}>
+          <a href="https://github.com/OliverMoscow/siwe-next">Code</a>
+        </li>
       </ul>
     </footer>
   )
