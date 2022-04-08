@@ -29,8 +29,8 @@ export default async function auth(req, res) {
 
           // TODO - use domain from envirnment to prefect attacks. 
           // temporarilly bypassing domain because domain on vercel constantly changes
-          // const domain = process.env.DOMAIN
-          const domain = siwe.domain
+          const domain = process.env.DOMAIN
+          // const domain = siwe.domain
           if (siwe.domain !== domain) {
             console.log(siwe.domain, domain)
             return null
