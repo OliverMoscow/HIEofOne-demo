@@ -28,7 +28,7 @@ export default async function auth(req, res) {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
           const domain = process.env.DOMAIN
           if (siwe.domain !== domain) {
-            console.log("1")
+            console.log(siwe.domain, domain)
             return null
           }
 
