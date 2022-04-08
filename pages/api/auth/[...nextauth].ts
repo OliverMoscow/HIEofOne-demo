@@ -26,7 +26,11 @@ export default async function auth(req, res) {
       async authorize(credentials) {
         try {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
-          const domain = process.env.DOMAIN
+
+          // TODO - use domain from envirnment to prefect attacks. 
+          // temporarilly bypassing domain because domain on vercel constantly changes
+          // const domain = process.env.DOMAIN
+          const domain = siwe.domain
           if (siwe.domain !== domain) {
             console.log(siwe.domain, domain)
             return null
