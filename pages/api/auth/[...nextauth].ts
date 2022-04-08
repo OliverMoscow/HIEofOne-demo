@@ -28,31 +28,35 @@ export default async function auth(req, res) {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
           const domain = process.env.DOMAIN
           if (siwe.domain !== domain) {
+            console.log("1")
             return null
           }
 
           if (siwe.nonce !== (await getCsrfToken({ req }))) {
+            console.log("2")
             return null
           }
 
           await siwe.validate(credentials?.signature || "")
+          console.log("3")
           return {
             id: siwe.address,
           }
         } catch (e) {
+          console.log("4")
           return null
         }
       },
     }),
   ]
 
-  const isDefaultSigninPage =
-    req.method === "GET" && req.query.nextauth.includes("signin")
+  // const isDefaultSigninPage =
+  //   req.method === "GET" && req.query.nextauth.includes("signin")
 
-  // Hides Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    providers.pop()
-  }
+  // // Hides Sign-In with Ethereum from default sign page
+  // if (isDefaultSigninPage) {
+  //   providers.pop()
+  // }
 
   return await NextAuth(req, res, {
     // https://next-auth.js.org/configuration/providers/oauth
