@@ -35,8 +35,10 @@ export default async function auth(req, res) {
             console.log(siwe.domain, domain)
             return null
           }
+          const token = await getCsrfToken({ req })
 
-          if (siwe.nonce !== (await getCsrfToken({ req }))) {
+          if (siwe.nonce !== (token)) {
+            console.log(siwe.nonce, token)
             console.log("2")
             return null
           }
