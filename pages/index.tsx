@@ -74,6 +74,7 @@ export const Home = () => {
   if (accountData && state.address) {
     return (
       <div>
+          <h1>Your trust Trustee, at your service.</h1>
             <div>Signed in as {state.address}</div>
             <button
               onClick={async () => {

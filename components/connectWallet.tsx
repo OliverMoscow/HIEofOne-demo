@@ -42,6 +42,7 @@ export const ConnectWallet = () => {
   }
   return (
     <div>
+      <h1>Sign-in to Trustee</h1>
       {data.connectors.map((connector) => (
         <button
           // disabled={!connector.ready}
@@ -49,7 +50,7 @@ export const ConnectWallet = () => {
           onClick={() => signIn(connector)}
         >
           {connector.name}
-          {!connector.ready}
+          {/* {!connector.ready} */}
         </button>
       ))}
 
