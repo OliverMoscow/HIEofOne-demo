@@ -1,94 +1,40 @@
-import * as React from 'react'
-import { useAccount, useNetwork, useSignMessage } from 'wagmi'
-import { SiweMessage } from 'siwe';
-import { ConnectWallet } from '../components/connectWallet';
 
-export const Home = () => {
-  const [{ data: accountData }] = useAccount()
-  const [{ data: networkData }] = useNetwork()
+import Router from 'next/router'
+import React, { useState } from "react";
 
-  const [state, setState] = React.useState<{
-    address?: string
-    error?: Error
-    loading?: boolean
-  }>({})
-  const [, signMessage] = useSignMessage()
+export default function Home() {
+  const [email, setEmail] = useState("");
+  
+  //@ts-ignore
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+      const domain = "http://" + window.location.host 
 
-  // const signIn = React.useCallback(async () => {
-  //   try {
-  //     const address = accountData?.address
-  //     const chainId = networkData?.chain?.id
-  //     if (!address || !chainId) return
+      const res = await fetch("/api/sendgrid", {
+        body: JSON.stringify({ "email": email, "callback": domain + '/siwe' }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
 
-  //     setState((x) => ({ ...x, error: undefined, loading: true }))
-  //     // Fetch random nonce, create SIWE message, and sign with wallet
-  //     const nonceRes = await fetch('/api/nonce')
-  //     const message = new SiweMessage({
-  //       domain: window.location.host,
-  //       address,
-  //       statement: 'Sign in with Ethereum to the app.',
-  //       uri: window.location.origin,
-  //       version: '1',
-  //       chainId,
-  //       nonce: await nonceRes.text(),
-  //     })
-  //     const signRes = await signMessage({ message: message.prepareMessage() })
-  //     if (signRes.error) throw signRes.error
-
-  //     // Verify signature
-  //     const verifyRes = await fetch('/api/verify', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ message, signature: signRes.data }),
-  //     })
-  //     if (!verifyRes.ok) throw new Error('Error verifying message')
-
-  //     setState((x) => ({ ...x, address, loading: false }))
-  //   } catch (error) {
-  //     //@ts-ignore
-  //     setState((x) => ({ ...x, error, loading: false }))
-  //   }
-  // }, [])
-
-  // Fetch user when:
-  React.useEffect(() => {
-    const handler = async () => {
-      try {
-        const res = await fetch('/api/me')
-        const json = await res.json()
-        setState((x) => ({ ...x, address: json.address }))
-      } finally {
-        setState((x) => ({ ...x, loading: false }))
+      const { error } = await res.json();
+      if (error) {
+        console.log(error);
+        return;
       }
-    }
-    // 1. page loads
-    ;(async () => await handler())()
+      Router.push(domain + "/emailVerification")
+  };
 
-    // 2. window is focused (in case user logs out of another window)
-    window.addEventListener('focus', handler)
-    return () => window.removeEventListener('focus', handler)
-  }, [])
-
-  if (accountData && state.address) {
-    return (
-      <div>
-          <h1>Your trust Trustee, at your service.</h1>
-            <div>Signed in as {state.address}</div>
-            <button
-              onClick={async () => {
-                await fetch('/api/logout')
-                setState({})
-              }}
-            >
-              Sign Out
-            </button>
-          </div>
-    )
-  }
-
-  return <ConnectWallet />
+  
+  return (
+    <div className="container">
+        <form onSubmit={handleSubmit}>
+          <h3> Patient </h3>
+          <label htmlFor="email">sign in via email</label>
+          <input type="email" name="email" value={email} onChange={e => setEmail(e.target.value)} required />
+          <button type="submit">submit</button>
+        </form>
+    </div>
+  );
 }
-
-export default Home

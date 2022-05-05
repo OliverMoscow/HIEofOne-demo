@@ -1,23 +1,25 @@
-import { Provider, chain, defaultChains } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { WalletLinkConnector } from 'wagmi/connectors/walletLink'
-import Home from '.'
-import { ConnectWallet } from '../components/connectWallet'
+import { Provider, chain, defaultChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { WalletLinkConnector } from "wagmi/connectors/walletLink";
+import Layout from "../components/layout";
+import '../styles/globals.css'
+import 'tailwindcss/tailwind.css'
+
 
 // API key for Ethereum node
 // Two popular services are Infura (infura.io) and Alchemy (alchemy.com)
-const infuraId = process.env.INFURA_ID
+const infuraId = process.env.INFURA_ID;
 
 // Chains for connectors to support
-const chains = defaultChains
+const chains = defaultChains;
 
 // Set up connectors
 //@ts-ignore
 const connectors = ({ chainId }) => {
   const rpcUrl =
     chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0]
+    chain.mainnet.rpcUrls[0];
   return [
     // new InjectedConnector({
     //   chains,
@@ -31,18 +33,22 @@ const connectors = ({ chainId }) => {
     }),
     new WalletLinkConnector({
       options: {
-        appName: 'HIE of One',
+        appName: "HIE of One",
         jsonRpcUrl: `${rpcUrl}/${infuraId}`,
       },
     }),
-  ]
-}
+  ];
+};
 
-const App = () => (
-  //@ts-ignore
-  <Provider autoConnect connectors={connectors}>
-    <Home />
-  </Provider>
-)
-
-export default App
+//@ts-ignore
+const MyApp = ({ Component, pageProps, auth }) => {
+  return (
+    //@ts-ignore
+    <Provider autoConnect connectors={connectors}>
+      {/* <Layout> */}
+        <Component {...pageProps} />
+      {/* </Layout> */}
+    </Provider>
+  );
+};
+export default MyApp;
