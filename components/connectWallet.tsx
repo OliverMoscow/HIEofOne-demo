@@ -1,7 +1,7 @@
 import { SiweMessage } from 'siwe'
 import { useConnect } from 'wagmi'
 
-export const ConnectWallet = () => {
+export default function ConnectWallet() {
   const [{ data, error }, connect] = useConnect()
 
   //@ts-ignore

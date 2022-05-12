@@ -1,67 +1,96 @@
-import Router from "next/router";
-import React, { useState } from "react";
-import PouchDB from "pouchdb";
+import * as React from "react";
+import { useAccount, useNetwork, useSignMessage } from "wagmi";
+import { SiweMessage } from "siwe";
+import ConnectWallet from "../components/connectWallet"
+import CreateAccount from "../components/createAccount";
 
-//commands to kill couch db
-// sudo lsof -i :5984
-//kill "PID"
+const Home = () => {
+  const [{ data: accountData }] = useAccount();
+  const [{ data: networkData }] = useNetwork();
 
-export default function Home() {
-  const [email, setEmail] = useState("");
+  const [state, setState] = React.useState<{
+    address?: string;
+    error?: Error;
+    loading?: boolean;
+  }>({});
+  const [, signMessage] = useSignMessage();
 
-  //@ts-ignore
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    var db = new PouchDB('http://localhost:5984/kittens');
-    var doc = {
-      "_id": "mittens",
-      "name": "Mittens",
-      "occupation": "kitten",
-      "age": 3,
-      "hobbies": [
-        "playing with balls of yarn",
-        "chasing laser pointers",
-        "lookin' hella cute"
-      ]
+  // const signIn = React.useCallback(async () => {
+  //   try {
+  //     const address = accountData?.address
+  //     const chainId = networkData?.chain?.id
+  //     if (!address || !chainId) return
+
+  //     setState((x) => ({ ...x, error: undefined, loading: true }))
+  //     // Fetch random nonce, create SIWE message, and sign with wallet
+  //     const nonceRes = await fetch('/api/nonce')
+  //     const message = new SiweMessage({
+  //       domain: window.location.host,
+  //       address,
+  //       statement: 'Sign in with Ethereum to the app.',
+  //       uri: window.location.origin,
+  //       version: '1',
+  //       chainId,
+  //       nonce: await nonceRes.text(),
+  //     })
+  //     const signRes = await signMessage({ message: message.prepareMessage() })
+  //     if (signRes.error) throw signRes.error
+
+  //     // Verify signature
+  //     const verifyRes = await fetch('/api/verify', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ message, signature: signRes.data }),
+  //     })
+  //     if (!verifyRes.ok) throw new Error('Error verifying message')
+
+  //     setState((x) => ({ ...x, address, loading: false }))
+  //   } catch (error) {
+  //     //@ts-ignore
+  //     setState((x) => ({ ...x, error, loading: false }))
+  //   }
+  // }, [])
+
+  // Fetch user when:
+  React.useEffect(() => {
+    const handler = async () => {
+      try {
+        const res = await fetch("/api/me");
+        const json = await res.json();
+        setState((x) => ({ ...x, address: json.address }));
+      } finally {
+        setState((x) => ({ ...x, loading: false }));
+      }
     };
-    // db.put(doc);
-    db.get('mittens').then(function (doc) {
-      console.log(doc);
-    });
+    // 1. page loads
+    (async () => await handler())();
 
-    // const domain = "http://" + window.location.host;
+    // 2. window is focused (in case user logs out of another window)
+    window.addEventListener("focus", handler);
+    return () => window.removeEventListener("focus", handler);
+  }, []);
 
-    // const res = await fetch("/api/sendgrid", {
-    //   body: JSON.stringify({ email: email, callback: domain + "/siwe" }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   method: "POST",
-    // });
+  if (accountData && state.address) {
+    return (
+      <div>
+        <h1>Your trust Trustee, at your service.</h1>
+        <div>Signed in as {state.address}</div>
+        <button
+          onClick={async () => {
+            await fetch("/api/logout");
+            setState({});
+          }}
+        >
+          Sign Out
+        </button>
+        < CreateAccount />
+      </div>
+    );
+  }
 
-    // const { error } = await res.json();
-    // if (error) {
-    //   console.log(error);
-    //   return;
-    // }
+  return <ConnectWallet />;
+};
 
-    // Router.push(domain + "/emailVerification");
-  };
-
-  return (
-    <div className="container">
-      <form onSubmit={handleSubmit}>
-        <h3> Patient </h3>
-        <label htmlFor="email">sign in via email</label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">submit</button>
-      </form>
-    </div>
-  );
-}
+export default Home;

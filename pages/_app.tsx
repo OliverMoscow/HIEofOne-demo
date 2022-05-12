@@ -45,9 +45,9 @@ const MyApp = ({ Component, pageProps, auth }) => {
   return (
     //@ts-ignore
     <Provider autoConnect connectors={connectors}>
-      {/* <Layout> */}
+      <Layout>
         <Component {...pageProps} />
-      {/* </Layout> */}
+      </Layout>
     </Provider>
   );
 };
