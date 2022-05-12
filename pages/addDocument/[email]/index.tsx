@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 //commands to kill couch db
@@ -6,10 +6,9 @@ import { useEffect, useState } from "react";
 //kill "PID"
 
 //@ts-ignore
-export default function NewUser({email}) {
+export default function NewUser({ email }) {
   const [success, setSuccess] = useState(false);
   const [isLoading, setLoading] = useState(false);
-
 
   useEffect(() => {
     setLoading(true);
@@ -32,13 +31,13 @@ export default function NewUser({email}) {
       headers: headers,
       body: JSON.stringify(document),
     })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data) => {
         console.log("response", data);
         if (data.ok) {
-          setSuccess(true)
+          setSuccess(true);
         }
-        setLoading(false)
+        setLoading(false);
       });
   }, []);
 
@@ -47,16 +46,20 @@ export default function NewUser({email}) {
   return (
     <div>
       <h1>New Patient</h1>
-      <p>{success ? "User added!" : "Sorry, this user already exists. Try again with a different email."}</p>
-      <a href="/"> home </a>
+      <p>
+        {success
+          ? "User added!"
+          : "Sorry, this user already exists. Try again with a different email."}
+      </p>
+      <Link href="/">
+        <a>home</a>
+      </Link>
     </div>
   );
-
-
 }
 
 //@ts-ignore
 NewUser.getInitialProps = async ({ query }) => {
-  const {email} = query
-  return {email}
-}
+  const { email } = query;
+  return { email };
+};
