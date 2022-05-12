@@ -1,4 +1,3 @@
-import Router from "next/router";
 import React, { useState } from "react";
 
 export default function CreateAccount() {

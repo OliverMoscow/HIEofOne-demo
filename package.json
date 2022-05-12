@@ -7,7 +7,9 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "export": "npm run build && next export -o _static"
+
     },
     "dependencies": {
         "@sendgrid/mail": "^7.6.2",
