@@ -4,7 +4,6 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import Layout from "../components/layout";
 import '../styles/globals.css'
-import 'tailwindcss/tailwind.css'
 
 
 // API key for Ethereum node
