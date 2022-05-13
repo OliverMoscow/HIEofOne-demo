@@ -16,7 +16,7 @@
         "dotenv": "^16.0.0",
         "ethers": "5.5.1",
         "iron-session": "^6.1.2",
-        "next": "12.1.5",
+        "next": "^12.1.7-canary.6",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "siwe": "^1.1.6",
