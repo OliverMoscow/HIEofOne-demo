@@ -91,7 +91,7 @@ const Home = () => {
                 setState({});
               }}
             >
-              Sign Out
+              Disconnect
             </button>
           </div>
         </div>
