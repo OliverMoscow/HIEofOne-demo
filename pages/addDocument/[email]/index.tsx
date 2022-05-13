@@ -9,24 +9,25 @@ import { useEffect, useState } from "react";
 export default function NewUser({ email }) {
   const [success, setSuccess] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [users, setUsers] = useState("");
+
+  //TODO-make env variables work
+  var user = "admin";
+  var pass = "***REMOVED***";
+  var url = "http://127.0.0.1:5984/users/";
+
+  var document = {
+    email: email,
+    verified: true,
+  };
 
   useEffect(() => {
     setLoading(true);
-
-    //TODO-make env variables work
-    var user = "admin";
-    var pass = "***REMOVED***";
-    var url = "http://127.0.0.1:5984/users/" + email;
     var authorizationBasic = window.btoa(user + ":" + pass);
     var headers = new Headers();
     headers.append("Authorization", "Basic " + authorizationBasic);
 
-    var document = {
-      email: email,
-      verified: true,
-    };
-
-    fetch(url, {
+    fetch(url + email, {
       method: "PUT",
       headers: headers,
       body: JSON.stringify(document),
@@ -41,18 +42,39 @@ export default function NewUser({ email }) {
       });
   }, []);
 
+  const getUsers = async () => {
+    var authorizationBasic = window.btoa(user + ":" + pass);
+    var headers = new Headers();
+    headers.append("Authorization", "Basic " + authorizationBasic);
+    fetch(url + "_all_docs", {
+      method: "GET",
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("response", data);
+        setLoading(false);
+        setUsers(JSON.stringify(data));
+      });
+  };
+
   if (isLoading) return <p>Loading...</p>;
 
   return (
     <div>
-      <h1>New Patient</h1>
+      <hr className="solid" />
+      <h1>{success ? "Your Trustee, at your service." : "Error"}</h1>
       <p>
         {success
-          ? "User added!"
+          ? "User succesfully added!"
           : "Sorry, this user already exists. Try again with a different email."}
       </p>
+      <button onClick={() => getUsers()}>See All Users (For Testing)</button>{" "}
+      <br />
+      <p>{users}</p>
+      <br />
       <Link href="/">
-        <a>home</a>
+        <a>Go Home</a>
       </Link>
     </div>
   );

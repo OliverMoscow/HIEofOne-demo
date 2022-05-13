@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useAccount, useNetwork, useSignMessage } from "wagmi";
 import { SiweMessage } from "siwe";
-import ConnectWallet from "../components/connectWallet"
+import ConnectWallet from "../components/connectWallet";
 import CreateAccount from "../components/createAccount";
 
 const Home = () => {
@@ -75,22 +75,38 @@ const Home = () => {
   if (accountData && state.address) {
     return (
       <div>
-        <h1>Your trust Trustee, at your service.</h1>
-        <div>Signed in as {state.address}</div>
-        <button
-          onClick={async () => {
-            await fetch("/api/logout");
-            setState({});
-          }}
-        >
-          Sign Out
-        </button>
-        < CreateAccount />
+        <hr className="solid" />
+        <h1>Sign-in to Trustee</h1>
+        <div className="section">
+          <hr className="solid" />
+          <div className="section-num">
+            <h2> 1. </h2>
+          </div>
+          <div className="section-content">
+            <h2>Etherium Account Connected</h2>
+            <div className="etheriumAddress">Signed in as {state.address}</div>
+            <button
+              onClick={async () => {
+                await fetch("/api/logout");
+                setState({});
+              }}
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+        <CreateAccount />
       </div>
     );
   }
 
-  return <ConnectWallet />;
+  return (
+    <div>
+      <hr className="solid" />
+      <h1>Sign-in to Trustee</h1>
+      <ConnectWallet />
+    </div>
+  );
 };
 
 export default Home;
