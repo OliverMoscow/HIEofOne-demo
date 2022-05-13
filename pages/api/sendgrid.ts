@@ -9,11 +9,11 @@ async function sendEmail(req, res) {
     await sendgrid.send({
       to: `${req.body.email}`, // Your email where you'll receive emails
       from: "support@hieofone.com", // your website email address here
-      subject: "HIE of One - varify your email",
+      subject: "HIE of One - verify your email",
       //@ts-ignore
       html: `<div>
-        <h3> Here is your varification link </h3>
-        <a href="${req.body.callback}"> varify email </a>
+        <h3> Here is your verification link </h3>
+        <a href="${req.body.callback}"> verify email </a>
         </div>`,
     });
   } catch (error) {
