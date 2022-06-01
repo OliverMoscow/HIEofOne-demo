@@ -1,10 +1,10 @@
 import sendgrid from "@sendgrid/mail";
 
 //@ts-ignore
-// sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-sendgrid.setApiKey("***REMOVED***")
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 //@ts-ignore
 async function sendEmail(req, res) {
+  console.log(process.env.SENDGRID_API_KEY)
   try {
     console.log("REQ.BODY", req.body);
     await sendgrid.send({
