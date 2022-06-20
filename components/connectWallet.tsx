@@ -6,7 +6,6 @@ export default function ConnectWallet() {
 
   //@ts-ignore
   const signIn = async (connector) => {
-    console.log("button clicked");
     try {
       const res = await connect(connector); // connect from useConnect
       if (!res.data) throw res.error ?? new Error("Something went wrong");
@@ -37,12 +36,6 @@ export default function ConnectWallet() {
       //@ts-ignore
 
       window.location.reload(false);
-
-      // if (! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-      // ) {
-      // } else {
-        
-      // }
     } catch (error) {
       // Do something with the error
     }
@@ -66,7 +59,6 @@ export default function ConnectWallet() {
             {/* {!connector.ready} */}
           </button>
         ))}
-
         {error && <div>{error?.message ?? "Failed to connect"}</div>}
       </div>
     </div>
