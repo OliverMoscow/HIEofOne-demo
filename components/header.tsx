@@ -11,7 +11,7 @@ export default class Header extends Component {
           <a>Privacy Policy</a>
         </Link>
         <Link href="">
-          <a>Support</a>``
+          <a>Support</a>
         </Link>
       </div>
     );

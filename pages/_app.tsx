@@ -24,12 +24,12 @@ const connectors = ({ chainId }) => {
     //   chains,
     //   options: { shimDisconnect: true },
     // }),
-    new WalletConnectConnector({
-      options: {
-        infuraId,
-        qrcode: true,
-      },
-    }),
+    // new WalletConnectConnector({
+    //   options: {
+    //     infuraId,
+    //     qrcode: true,
+    //   },
+    // }),
     new WalletLinkConnector({
       options: {
         appName: "HIE of One",

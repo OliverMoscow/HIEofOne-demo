@@ -7,6 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case 'POST':
       try {
+        console.log("signing in with etherium")
         const { message, signature } = req.body
         const siweMessage = new SiweMessage(message)
         const fields = await siweMessage.validate(signature)
