@@ -11,7 +11,6 @@ export default function NewUser({ email }) {
   const [isLoading, setLoading] = useState(false);
   const [users, setUsers] = useState("");
 
-  //TODO-make env variables work
   var user = process.env.NEXT_PUBLIC_COUCH_USERNAME;
   var pass = process.env.NEXT_PUBLIC_COUCH_PASSWORD;;
   var url = "http://127.0.0.1:5984/users/";

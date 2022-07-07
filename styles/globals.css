@@ -14,6 +14,9 @@ body {
     margin-bottom: 40px;
 }
 
+
+/* sections */
+
 .section {
     padding-bottom: 20px;
 }
@@ -29,12 +32,66 @@ body {
     vertical-align: top
 }
 
+
+/* buttons */
+
+.btn {
+    padding: 10px 20px;
+    margin: 0px 15px 15px 0;
+    border-radius: 10px;
+    border-width: 1px;
+}
+
+.btn-accented {
+    background-color: rgb(76, 146, 108);
+    color: white;
+}
+
+.btn-submit {
+    background-color: rgb(73, 0, 107);
+    color: white;
+    border-radius: 3px;
+    padding: 6px 10px;
+}
+
+.btn-simple {
+    background-color: gray;
+    border-width: 0;
+    color: white;
+}
+
+.ul-noformat {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ul-noformat>* {
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 5px;
+    margin-right: 7px;
+}
+
+label {
+    font-weight: 500;
+}
+
 a {
     color: blue;
     text-decoration: none;
     padding-right: 40px;
 }
 
-.etheriumAddress {
-    padding-bottom: 20px;
+.ethereumAccount {
+    padding: 7px 5px;
+    margin: 15px 0;
+    background: rgb(158, 150, 150);
+    border-radius: 7px;
+}
+
+.ethereumAccount>* {
+    margin: 3px;
 }

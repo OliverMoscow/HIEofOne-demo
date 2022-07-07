@@ -1,4 +1,3 @@
-
 import { withIronSessionApiRoute } from 'iron-session/next'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -13,6 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(405).end(`Method ${method} Not Allowed`)
   }
 }
+
 
 export default withIronSessionApiRoute(handler, {
     cookieName: 'siwe',

@@ -1,53 +1,67 @@
-import { Provider, chain, defaultChains } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 import Layout from "../components/layout";
-import '../styles/globals.css'
+import "../styles/globals.css";
+import {
+  WagmiConfig,
+  createClient,
+  defaultChains,
+  configureChains,
+} from 'wagmi'
 
+import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { publicProvider } from 'wagmi/providers/public'
 
-// API key for Ethereum node
-// Two popular services are Infura (infura.io) and Alchemy (alchemy.com)
-const infuraId = process.env.INFURA_ID;
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
-// Chains for connectors to support
-const chains = defaultChains;
+const alchemyId = process.env.ALCHEMY_ID
 
-// Set up connectors
-//@ts-ignore
-const connectors = ({ chainId }) => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0];
-  return [
-    // new InjectedConnector({
-    //   chains,
-    //   options: { shimDisconnect: true },
-    // }),
-    // new WalletConnectConnector({
-    //   options: {
-    //     infuraId,
-    //     qrcode: true,
-    //   },
-    // }),
-    new WalletLinkConnector({
+// Configure chains & providers with the Alchemy provider.
+// Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
+const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
+  alchemyProvider({ alchemyId }),
+  publicProvider(),
+])
+
+// Set up client
+const client = createClient({
+  autoConnect: true,
+  connectors: [
+    // new MetaMaskConnector({ chains }),
+    new CoinbaseWalletConnector({
+      chains,
       options: {
-        appName: "HIE of One",
-        jsonRpcUrl: `${rpcUrl}/${infuraId}`,
+        appName: 'wagmi',
       },
     }),
-  ];
-};
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
+      },
+    }),
+    // new InjectedConnector({
+    //   chains,
+    //   options: {
+    //     name: 'Injected',
+    //     shimDisconnect: true,
+    //   },
+    // }),
+  ],
+  provider,
+  webSocketProvider,
+})
 
 //@ts-ignore
 const MyApp = ({ Component, pageProps, auth }) => {
   return (
     //@ts-ignore
-    <Provider autoConnect connectors={connectors}>
+    <WagmiConfig client={client}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+    </WagmiConfig>
   );
 };
 export default MyApp;
