@@ -24,7 +24,7 @@ const PolicySummary = () => {
             adriang.xyz community issues access credentials based on active
             Doximity accounts.
           </li>
-        </ul>å
+        </ul>
       </div>
 
       <div>

@@ -23,51 +23,22 @@ const NewPatient = (props) => {
       return;
     }
 
-    //add user to db
-    var user = process.env.NEXT_PUBLIC_COUCH_USERNAME;
-    var pass = process.env.NEXT_PUBLIC_COUCH_PASSWORD;
-    var url = "http://127.0.0.1:5984/patients/";
-
-    var document = {
-      email: email,
+    var body = {
+      email: email
     };
 
-    var authorizationBasic = window.btoa(user + ":" + pass);
-    console.log(user);
-    var headers = new Headers();
-    headers.append("Authorization", "Basic " + authorizationBasic);
-
-    fetch(url + email, {
-      method: "PUT",
-      headers: headers,
-      body: JSON.stringify(document),
+    fetch(`/api/couchdb/newPatient`, {
+      method: "POST",
+      headers : { 
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
     })
-      .then((res) => res.json())
+      .then((res) =>  res.json())
       .then(async (data) => {
         console.log("response", data);
-        if (data.ok) {
-          //account succesfully created
-          //Send confirmation email
-          //** Insecure -- email needs to be encripted to prevent middle man attacks 
-          const domain = "http://" + window.location.host;
-          const res = await fetch("/api/sendgrid", {
-            body: JSON.stringify({
-              email: email,
-              subject: "HIE of One - Account Confirmation",
-              html: `<div><h1>Your HIE of One Trustee Account has been created!</h1><h1><a href=${domain}/myTrustee>Your Account</a></h1></div>`,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-            method: "POST",
-          });
-
-          const { error } = await res.json();
-          if (error) {
-            console.log(error);
-            return;
-          }
-
+        if (data.success) {
+          console.log(1) 
           setAccountCreated(true);
         }
         if (data.error) {

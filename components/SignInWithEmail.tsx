@@ -19,73 +19,32 @@ const SignIn = (props) => {
   //@ts-ignore
   const signIn = async (e) => {
     e.preventDefault();
-
-    //Check if users account exists
-    var user = process.env.NEXT_PUBLIC_COUCH_USERNAME;
-    var pass = process.env.NEXT_PUBLIC_COUCH_PASSWORD;
-    var url = "http://127.0.0.1:5984/patients/_find";
-
-    var authorizationBasic = window.btoa(user + ":" + pass);
-    var headers = new Headers();
-    headers.append("Authorization", "Basic " + authorizationBasic);
-    headers.append("Content-Type", "application/json");
-
+    
     var body = {
-      selector: { email: email },
+      email: email,
     };
 
-    fetch(url, {
+    fetch(`/api/couchdb/patientSignIn`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
       method: "POST",
-      headers: headers,
       body: JSON.stringify(body),
     })
       .then((res) => res.json())
       .then(async (data) => {
         console.log("response", data);
-        if (data.docs.length > 0) {
-          //matching email found in database
-
-          //Create a code to send to user
-          const code = generateCode();
-          setCode(code);
-
-          //Send code
-          const res = await fetch("/api/sendgrid", {
-            body: JSON.stringify({
-              email: email,
-              subject: "HIE of One - Verification Code",
-              html: `<div><h4>Below is your varification code. DO NOT SHARE WITH ANYONE</h4><h1>${code}</h1></div>`,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-            method: "POST",
-          });
-
-          const { error } = await res.json();
-          if (error) {
-            console.log(error);
-            return;
-          }
-
+        if (!data.error) {
+          setCode(data.code)
           setSentEmail(true);
         } else {
           //no matching email not found in database
-          setError("No matching email found in database.");
+          setError(data.error);
         }
       });
   };
 
-  const generateCode = () => {
-    const givenSet = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-    let code = "";
-    for (let i = 0; i < 5; i++) {
-      let pos = Math.floor(Math.random() * givenSet.length);
-      code += givenSet[pos];
-    }
-    return code;
-  };
+  
 
   const authorize = () => {
     if (code == inputCode) {
