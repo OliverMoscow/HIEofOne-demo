@@ -41,7 +41,7 @@ const RequestAccess = () => {
     setCheckedScope(updated);
   };
   //@ts-ignore
-  const updatePupose = (position) => {
+  const updatePurpose = (position) => {
     const updated = checkedPurpose.map((item, index) =>
       index === position ? !item : item
     );
@@ -125,7 +125,7 @@ Purpose: ${selectedPurpose}`;
                   name={name}
                   value={name}
                   checked={checkedPurpose[index]}
-                  onChange={() => updatePupose(index)}
+                  onChange={() => updatePurpose(index)}
                 />
                 <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
               </li>

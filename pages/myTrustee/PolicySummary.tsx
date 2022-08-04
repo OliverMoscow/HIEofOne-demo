@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 
-const PolicySummary = () => {
+const PolicySummary = (props:any) => {
+
   return (
     <div>
       <div>
@@ -32,14 +33,10 @@ const PolicySummary = () => {
         <h4>Default data use policies you can customize:</h4>
         <ul>
           <li>
-            You currently have 1 policy form last modified: October 20, 2021
+            You currently have {props.records ? props.records.length : 0} policy forms{props.records ? " last modified: " + props.records[props.records.length - 1].date : "."}
           </li>
         </ul>
       </div>
-      <button className="btn btn-accented">Review and Edit My Policies</button>
-      <br></br>
-      <button className="btn">Restore Community Defaults</button>
-      <button className="btn">Add a Policy for My Trustee</button>
     </div>
   );
 };

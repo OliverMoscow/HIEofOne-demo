@@ -15,7 +15,7 @@ body {
 }
 
 
-/* sections */
+/* SECTIONS */
 
 .section {
     padding-bottom: 20px;
@@ -33,7 +33,7 @@ body {
 }
 
 
-/* buttons */
+/* BUTTONS */
 
 .btn {
     padding: 10px 20px;
@@ -60,6 +60,34 @@ body {
     color: white;
 }
 
+.btn-small {
+    padding: 2px 20px;
+    font-size: 12px;
+    margin: 5px;
+    background-color: white;
+}
+
+
+/* RECORDS */
+
+.record-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.record-text {
+    width: 75%;
+    padding: 2px;
+    margin: 5px;
+    border: 1px solid black;
+    font-size: 12px;
+    background-color: white;
+}
+
+
+/* OTHER FORMATING */
+
 .ul-noformat {
     list-style: none;
     padding: 0;
@@ -83,6 +111,10 @@ a {
     color: blue;
     text-decoration: none;
     padding-right: 40px;
+}
+
+p {
+    overflow-wrap: break-word;
 }
 
 .ethereumAccount {
