@@ -13,6 +13,7 @@ export default function Login(props) {
 
     const { elements } = event.target;
 
+    if (typeof window === 'undefined') return
     // the magic code
     const did = await new Magic(
         //@ts-ignore

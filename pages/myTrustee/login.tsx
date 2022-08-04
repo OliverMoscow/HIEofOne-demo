@@ -16,6 +16,7 @@ export default function Login() {
     
 
     // the magic code
+    if (typeof window === "undefined") return
     const did = await new Magic(
       //@ts-ignore
       process.env.NEXT_PUBLIC_MAGIC_PUB_KEY
