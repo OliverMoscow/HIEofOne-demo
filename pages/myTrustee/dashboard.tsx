@@ -88,7 +88,7 @@ export default function Dashboard() {
               className="btn btn-accented"
               onClick={() => changePage("manageRecords")}
             >
-              Review and Edit My Policies
+              {records? "Review and Edit My Policies" : "Create New Policies"}
             </button>
           </div>
         )}
