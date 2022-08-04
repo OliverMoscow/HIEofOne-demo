@@ -20,7 +20,7 @@ export default function ManageRecords(props:any) {
           <h2>Your Managed Records</h2>
           <p>Chose a Record to Set Access Policy</p>
           {props.records?.map((record:any) => (
-            <div>
+            <div key={record.id}>
               <Record data={record} action={props.changePage}/>
               <hr className="solid" />
             </div>
