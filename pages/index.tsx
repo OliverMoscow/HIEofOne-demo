@@ -13,15 +13,9 @@ const Home = () => {
         <hr className="solid" />
         <h2>Patients</h2>
         <div>
-          <Link href="/newPatient">
-            <button className="btn btn-accented">
-              Subscribe to your own Trustee. First month is free, then $2/month
-            </button>
-          </Link>
-          <br></br>
           <Link href="/myTrustee">
-            <button className="btn">
-              Sign-in and manage your records access policies
+            <button className="btn btn-accented">
+              Sign-in / Subscribe to your own Trustee
             </button>
           </Link>
         </div>

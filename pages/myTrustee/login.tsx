@@ -1,6 +1,8 @@
 // pages/login.js
 import { useRouter } from "next/router";
 import { Magic } from "magic-sdk";
+import React, { useState } from "react";
+import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
@@ -9,43 +11,44 @@ export default function Login() {
     event.preventDefault();
 
     const { elements } = event.target;
+    //the magic code
+    if (typeof window === "undefined") return;
+    const did = await new Magic(
+      //@ts-ignore
+      process.env.NEXT_PUBLIC_MAGIC_PUB_KEY
+    ).auth.loginWithMagicLink({ email: elements.email.value });
 
-    //Check if user has an acount
-    const isRegistered = await fetch(
-      "/api/couchdb/isPatient/" + elements.email.value,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => res.json())
-      .then((json) => json.success);
+    // Once we have the did from magic, login with our own API
+    const authRequest = await fetch("/api/magicLink/login", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${did}` },
+    });
 
-    if (isRegistered) {
-      //the magic code
-      if (typeof window === "undefined") return;
-      const did = await new Magic(
-        //@ts-ignore
-        process.env.NEXT_PUBLIC_MAGIC_PUB_KEY
-      ).auth.loginWithMagicLink({ email: elements.email.value });
+    if (authRequest.ok) {
+      // Magic Link login successful!
+      //Check if user has an acount
+      const isRegistered = await fetch(
+        "/api/couchdb/isPatient/" + elements.email.value,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((json) => json.success);
 
-      // Once we have the did from magic, login with our own API
-      const authRequest = await fetch("/api/magicLink/login", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${did}` },
-      });
-
-      if (authRequest.ok) {
-        // Magic Link login successful!
-        // Adding user to couchdb
-
+      if (isRegistered) {
         router.push("/myTrustee/dashboard");
       } else {
-        /* handle errors */
+        alert(
+          "Error: Email not registered. Please subscribe to trustee first."
+        );
+        router.push("/myTrustee/newPatient")
       }
     } else {
-      alert("Error: Email not registered. Please subscribe to trustee first.");
+      /* handle errors */
     }
   };
 
